@@ -12,6 +12,9 @@ class MainVC: UIViewController {
 
     @IBOutlet weak var wageTxt: CurrencyTxtField!
     @IBOutlet weak var priceTxt: CurrencyTxtField!
+    @IBOutlet weak var resultLbl: UILabel!
+    @IBOutlet weak var hoursLbl: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +31,35 @@ class MainVC: UIViewController {
         //displaying the calcButton when text is entered in the textFields
         wageTxt.inputAccessoryView = calcButton
         priceTxt.inputAccessoryView = calcButton
+        
+        resultLbl.isHidden = true
+        hoursLbl.isHidden = true
     }
     
     //@objc because #selectors (calling a function at a later time) are an Objective-C function
     @objc func calculate(){
-        print("We got here")    }
+        
+        //checking that the text on the labels is not nil, else this method should not work
+        if let wageTxt = wageTxt.text, let priceTxt = priceTxt.text {
+            
+            //check that the text can be converted to a number (double)
+            if let wage = Double(wageTxt), let price = Double(priceTxt){
+                view.endEditing(true) //removes keyboard
+                resultLbl.isHidden = false
+                hoursLbl.isHidden = false
+                resultLbl.text = "\(Wage.getHours(forWage: wage, andPrice: price))"
+                
+            }
+        }
+    }
 
-  
+    @IBAction func clearCalculator(_ sender: Any) {
+        resultLbl.isHidden = true
+        hoursLbl.isHidden = true
+        wageTxt.text = ""
+        priceTxt.text = ""
+    }
+    
 
 
 }
