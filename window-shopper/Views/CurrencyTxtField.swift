@@ -11,6 +11,26 @@ import UIKit
 @IBDesignable //allows interface builder to look like runtime
 class CurrencyTxtField: UITextField {
     
+    override func draw(_ rect: CGRect) {
+        let size: CGFloat = 20
+        let currenclyLbl = UILabel(frame: CGRect(x: 5, y: (frame.size.height / 2) - size / 2, width: size, height: size))
+        currenclyLbl.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)
+        currenclyLbl.textAlignment = .center
+        currenclyLbl.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        currenclyLbl.layer.cornerRadius = 5.0
+        currenclyLbl.clipsToBounds = true
+        
+        //displaying hte currency of the users current location
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = .current
+        currenclyLbl.text = formatter.currencySymbol
+        
+        //adding the currencyLbl as a subview to the other labels
+        addSubview(currenclyLbl)
+        
+    }
+    
     //need to call this function for @IBDesignable to work
     override func prepareForInterfaceBuilder() {
         customizeView()
@@ -26,6 +46,7 @@ class CurrencyTxtField: UITextField {
     func customizeView(){
         backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.25)
         layer.cornerRadius = 5.0
+        clipsToBounds = true
         textAlignment = .center
         
         //placeholder is a property of a textField
